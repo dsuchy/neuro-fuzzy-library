@@ -9,13 +9,13 @@ Neuro-fuzzy is an implementation of fuzzy tools for data analysis:
 
 The project is implemented in the C++ language.
  
-There are 5 examples of usage of the library.
+There are 6 examples of the usage of the library.
 
-Run `make 1` to run the 1st example, `make 2` – the 2nd example, and finally `make 5` to run the 5th example.
+Run `make 1` to run the 1st example, `make 2` – the 2nd example, and `make 6` to run the 6th example.
 
 Run `make doxygen` to produce a Doxygen documentation and UML class diagrams for the project.
 
-__Citation request__ If you use this library please cite [^nfl]
+__Citation request__ If you use this library, please cite [^nfl]
 
 ## Examples
 
@@ -34,21 +34,27 @@ This example presents modifiers of data:
 7. imputation of missing data with values from 3 nearest neighbours and then the imputed data set standardized
 8. a series of data modifiers: imputer with values from knn (k == 3) + standardiser, imputer with constant value, normaliser, standardiser, average imputer, imputer with constant value + normaliser, average imputer + standardiser
 9. imputer with constant value + normaliser + average imputer + standardiser
-
+10. split of a data set into _n_ chunks of train and test datasets for _n_-fold cross-validation
+11. split of a data set into _n_ chunks of train, validate, and test datasets for _n_-fold cross-validation
 
 ### make 2
 Run `make 2` for this example.
  
 This example presents clustering algorithms:
-1. fcm
+1. FCM (fuzzy c-means)
+1. FCM with Euclidean metric 
+1. FCM with cosine metric 
+1. FCM with Chebyshev metric 
+1. FCM with Minkowski metric 
+1. FCM with Manhattan metric 
 1. possibilistic fcm
 1. conditional fcm
 1. Gustafson-Kessel
 1. subspace fcm   (__Citation request__ If you use this algorithm, please cite [^subspace] and [^nfl])
 1. fubi (fuzzy biclustering)  (__Citation request__ If you use this algorithm, please cite [^fubi] and [^nfl])
 1. fcom
-1. dbscan
-1. grdbscan (granular dbscan)
+1. dbscan (__Citation request__ If you use this algorithm, please cite [^grdbscan])
+1. grdbscan (granular dbscan) (__Citation request__ If you use this algorithm, please cite [^grdbscan])
 
 
 ### make 3
@@ -75,15 +81,29 @@ This example presents neuro-fuzzy systems for
 	4. subspace ANNBFIS   (__Citation request__ If you use this algorithm, please cite [^subspace] and [^nfl])
 	5. FuBi ANNBFIS       (__Citation request__ If you use this algorithm, please cite [^fubi] and [^nfl])
 	6. 3WDNFS: three way decision neuro-fuzzy system (__Citation request__ If you use this algorithm, please cite [^three] and [^nfl])
+	7. Minkowski prototype TSK    
+	8. Minkowski prototype ANNBFIS
+	9. Mahalanobis prototype TSK
+	10. Mahalanobis prototype ANNBFIS
 1. regression:
 	1. MA
 	2. TSK
 	3. ANNBFIS
 	4. subspace ANNBFIS   (__Citation request__ If you use this algorithm, please cite [^subspace] and [^nfl])
 	5. FuBi ANNBFIS       (__Citation request__ If you use this algorithm, please cite [^fubi] and [^nfl])
-	6. prototype TSK      (__Citation request__ If you use this algorithm, please cite [^prototype] and [^nfl])
-	7. prototype ANNBFIS  (__Citation request__ If you use this algorithm, please cite [^prototype] and [^nfl]) 
- 
+	6. Minkowski prototype TSK      (__Citation request__ If you use this algorithm, please cite [^prototype] and [^nfl])
+	7. Minkowski prototype ANNBFIS  (__Citation request__ If you use this algorithm, please cite [^prototype] and [^nfl]) 
+	8. Mahalanobis prototype TSK
+	9. Mahalanobis prototype ANNBFIS
+	
+Models for the MA, TSK, and ANNBFIS systems are saved into files in numeric and liguistic description [^lin].
+
+### make 6
+Run `make 6` for this example.
+
+This example presents experiments for three way decision neuro-fuzzy system with meta-classifiers.
+Three way decision neuro-fuzzy systems are built with TSK and ANNBFIS neuro-fuzzy systems.
+
 ------------
 
 [^nfl]: Krzysztof Siminski, NFL -- Free Library for Fuzzy and Neuro-Fuzzy Systems, [in] Beyond Databases, Architectures and Structures. Paving the Road to Smart Data Processing and Analysis (Stanisław Kozielski, Dariusz Mrozek, Paweł Kasprowski, Bożena Małysiak-Mrozek, Daniel Kostrzewa, eds.), Springer International Publishing, 2019, pp. 139-150. 
@@ -187,16 +207,42 @@ This example presents neuro-fuzzy systems for
 	}
 	```
 
-[^three]: Krzysztof Siminski, 3WDNFS – Three-way decision neuro-fuzzy system for classification, [in] Fuzzy Sets and Systems, 2022
+[^three]: Krzysztof Siminski, 3WDNFS – Three-way decision neuro-fuzzy system for classification, [in] Fuzzy Sets and Systems, 2023, volume 466, pp. 108432
 	```
-	@article{id:Siminski20223WDNFS,
+	@article{id:Siminski20233WDNFS,
 		author   = {Krzysztof Siminski},
 		title    = {{3WDNFS} – Three-way decision neuro-fuzzy system for classification},
 		journal  = {Fuzzy Sets and Systems},
-		year     = {2022},
+		volume   = {466},
+		pages    = {108432},
+		year     = {2023},
+		issn     = {0165-0114},
 		doi      = {10.1016/j.fss.2014.12.007},
 	}
 	```
-	
-	
 
+[^grdbscan]: Dawid Suchy, Krzysztof Siminski, GrDBSCAN: A granular density–based clustering algorithm, [in] International Journal of Applied Mathematics and Computer Science, 2023, volume 33, number 2, pp. 297–312.
+	```
+	@Article{id:Suchy2023GrDBSCAN,
+		author   = {Dawid Suchy and Krzysztof Siminski},
+		journal  = {International Journal of Applied Mathematics and Computer Science},
+		title    = {GrDBSCAN: A granular density–based clustering algorithm},
+		year     = {2023},
+		pages    = {297–312},
+		volume   = {33},
+		number   = {2},
+		doi      = {10.34768/amcs-2023-0022},
+	}
+	```
+	
+[^lin]: Krzysztof Siminski, Konrad Wnuk, Automatic Extraction of Linguistic Description from Fuzzy Rule Base, 2024	
+	```
+	@misc{id:Siminski2024Automatic,
+      title={Automatic Extraction of Linguistic Description from Fuzzy Rule Base}, 
+      author={Krzysztof Siminski and Konrad Wnuk},
+      year={2024},
+      eprint={2404.03058},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG}
+    }
+	```

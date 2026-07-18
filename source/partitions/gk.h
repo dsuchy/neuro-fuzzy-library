@@ -2,6 +2,7 @@
 #ifndef GK_H
 #define GK_H
 
+#include "../partitions/fcm.h"
 #include "../partitions/fcm_generic.h"
 #include "../partitions/partitioner.h"
 #include "../metrics/metric_mahalanobis.h"
@@ -19,6 +20,7 @@ namespace ksi
       double _volume_rho = 1.0;  // cluster volume parameter
     public:
       gk ();
+      gk (const int nClusters, const int nIterations);
       gk (const double volume_rho);
       gk (const gk & wzor) = default;
       gk (gk && wzor) = default;
@@ -51,8 +53,11 @@ namespace ksi
       
    public:
       virtual ksi::partition doPartition(const ksi::dataset & ds) override;
+      
+   public:   
+      /** @return an abbreviation of a method */
+      virtual std::string getAbbreviation () const override;
    };
 }
-
 
 #endif

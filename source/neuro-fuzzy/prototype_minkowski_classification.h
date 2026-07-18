@@ -8,6 +8,7 @@
 #include "../neuro-fuzzy/prototype.h"
 #include "../neuro-fuzzy/premise.h"
 #include "../auxiliary/matrix.h"
+#include "../partitions/cluster.h"
 
 namespace ksi
 {
@@ -21,6 +22,7 @@ namespace ksi
        
     public:
       prototype_minkowski_classification (const double m, const double positive_class_label, const double negative_class_label);
+      prototype_minkowski_classification (const cluster & cl, const double m, const double positive_class_label, const double negative_class_label);
       prototype_minkowski_classification (const prototype_minkowski_classification & wzor) = default;
       prototype_minkowski_classification (prototype_minkowski_classification && wzor) = default;
       prototype_minkowski_classification & operator= (const prototype_minkowski_classification & wzor) = default;
@@ -33,13 +35,14 @@ namespace ksi
       * @param ss an output stream to print to
       * @return the stream (ss -- parameter) the methods has printed into
       */
-      virtual std::ostream & Print (std::ostream & ss) const override;
+      virtual std::ostream & print (std::ostream & ss) const override;
           
       virtual std::string get_name() const override;
       virtual std::string get_description() const override;
       
-      double debug_criterion_function(const std::vector<std::vector<double>>& X,
-                                     const std::vector<double> & Y) const override; 
+      /** @return The method returns the value of the criterion function for the principle of justified granularity.
+       @todo ¿Czy na pewno? */
+      virtual double criterion_function(const std::vector<std::vector<double>>& X, const std::vector<double> & Y) const override;
  
                                                    
    protected:
@@ -85,13 +88,6 @@ namespace ksi
             const std::vector<double> & dPpos_dz,
             const std::vector<double> & dPneg_da, 
             const std::vector<double> & dPneg_dz);
-         
-     /** The method elaborates the Gini index.
-      @param probability_positive probability of positive class 
-      @param probability_negative probability of negative class 
-      @return Gini index */    
-     double Gini_values(const double probability_positive, const double probability_negative) const;
-         
          
      std::pair<std::vector<double>, std::vector<double>> final_differentials(
             const std::vector<double> & dkappa_da, 

@@ -1,0 +1,39 @@
+name: C/C++ CI
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-24.04
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: configure
+      run: ./configure
+    - name: make
+      run: make
+      working-directory: source
+    - name: make 1
+      run: make 1
+      working-directory: source
+    - name: make 2
+      run: make 2
+      working-directory: source
+    - name: make 3
+      run: make 3
+      working-directory: source
+    - name: make 4
+      run: make 4
+      working-directory: source
+    - name: make 5
+      run: make 5
+      working-directory: source
+    - name: make lab
+      run: make lab
+      working-directory: source
+

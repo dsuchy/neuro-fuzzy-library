@@ -7,8 +7,10 @@
 #include <random>
 #include <algorithm>
 
-#include "../auxiliary/definitions.h"
+
 #include "../auxiliary/vector-operators.h"
+#include "../auxiliary/matrix.h"
+#include "../auxiliary/definitions.h"
 #include "../service/debug.h"
 
 
@@ -47,6 +49,27 @@ namespace ksi
               res[i] = l[i] + p[i];
            
            return res;
+       }
+       CATCH;
+   }
+   
+   std::vector<double> & subtract_with_saturation (std::vector<double> & l, 
+                                   const std::vector<double> & p)
+   {
+       try 
+       {
+           if (l.size() != p.size())
+               throw std::string ("The sizes of vectors do not match! (") + std::to_string(l.size()) + std::string(" != ") + std::to_string(p.size()) + std::string (")");
+           
+           std::vector<double> res (l.size());
+           for (std::size_t i = 0; i < l.size(); i++)
+           {
+              auto sat = ksi::saturate(p[i], l[i], 1.0);
+              //res[i] = l[i] + p[i];
+              l[i] -= sat;
+           }
+           
+           return l;
        }
        CATCH;
    }
@@ -124,7 +147,26 @@ namespace ksi
                          );
    }
 
-    
+   bool is_valid (const ksi::Matrix<double> & m)
+   {
+       return std::all_of(m.begin(), m.end(),
+                          [](const std::vector<double> &d)
+                          {
+                              return std::all_of(d.begin(), d.end(),
+                              [] (double d)
+                              {
+                                 return std::isfinite(d); 
+                              });
+                          });
+   }
+
+   bool is_valid (const std::vector<ksi::Matrix<double>> & l)
+   {
+       return std::all_of(l.begin(), l.end(), 
+                          [] (const auto m) 
+                          { return is_valid(m);}
+                         );
+   }
    /*
    std::ostream & operator << (std::ostream & ss, const std::vector<std::pair<double, double>> & we)
    {

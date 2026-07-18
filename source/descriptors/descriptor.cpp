@@ -3,12 +3,17 @@
 
 #include <iostream>
 #include <string>
+#include <sstream>
+
 #include "descriptor.h"
 #include "../service/debug.h"
 
-std::string ksi::descriptor::toString() const
+
+std::string ksi::descriptor::to_string() const
 {
-   return std::string ("[empty description]");
+   std::stringstream ss;
+   print(ss);
+   return ss.str();
 }
 
 void ksi::descriptor::cummulate_differentials(double x, double partial_differentials)
@@ -35,7 +40,7 @@ void ksi::descriptor::reset_differentials()
 
 void ksi::descriptor::actualise_parameters(double eta)
 {
-   //
+   // left unimplemented  
 }
 
 namespace ksi 
@@ -55,6 +60,11 @@ double ksi::descriptor::getWeight() const
 double ksi::descriptor::getMembershipUpper(double x)
 {
    return getMembership(x);
+}
+
+std::ostream& ksi::descriptor::printLinguisticDescription(std::ostream& ss, const DescriptorStatistics& descStat) const
+{
+    return ss << "[not implemented]";
 }
 
 ksi::ext_fuzzy_number_gaussian ksi::descriptor::getGranule() const

@@ -8,6 +8,7 @@
 #include <vector>
 #include <random>
 #include "../common/extensional-fuzzy-number-gaussian.h"
+#include "../common/DatasetStatistics.h"
 
 namespace ksi
 {
@@ -63,7 +64,9 @@ namespace ksi
       virtual void cummulate_differentials (double x, double partial_differentials);
       
       virtual descriptor * clone () const = 0;
-      virtual std::string toString() const;
+      
+      /** @return The method returns the name and paramters of the descriptor. */
+      virtual std::string to_string() const;
       
      /** The method actualises values of parameters of the fuzzy descriptor
       * Default behaviour: nothing
@@ -74,7 +77,15 @@ namespace ksi
      /** The method prints an object into output stream.
       * @param ss an output stream to print to
       */
-     virtual std::ostream & Print (std::ostream & ss) const = 0;
+     virtual std::ostream & print (std::ostream & ss) const = 0;
+
+     /** The method prints an object linguistic description into output stream.
+       * @param ss an output stream to print to
+       * @param descStat the descriptor statistics to print
+       * @date 2023-11-05
+       * @author Konrad Wnuk
+       */
+      virtual std::ostream& printLinguisticDescription(std::ostream& ss, const DescriptorStatistics& descStat) const ;
      
      /** The method returns parameters for an MA triangular consequense.
        * @return a vector of three values: minimal_support, core, and maximal_support */
@@ -97,6 +108,10 @@ namespace ksi
      
      /** @return The method returns a random value covered by a descriptor. */
      virtual double getRandomValue (std::default_random_engine & engine) = 0;
+     
+     /** @return The method returs the name of the descriptor.
+         @date 2024-02-21 */
+     virtual std::string getName() const = 0;
      
    };
 }

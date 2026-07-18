@@ -58,7 +58,7 @@ namespace ksi
        * @param learning_coefficient learning coefficient for gradient method
        * @param normalisation normalisation of data 
        * @param imp implication
-       * @param prot prototype factory 
+       * @param factory prototype factory 
        */
       annbfis_prototype (const int number_of_rules,
                          const int number_of_clustering_iterations,
@@ -66,7 +66,7 @@ namespace ksi
                          const double learning_coefficient,
                          const bool normalisation,
                          const implication & imp,
-                         const ksi::fac_prototype & prot);
+                         const ksi::fac_prototype & factory);
       
       
       /** constructor
@@ -93,21 +93,57 @@ namespace ksi
                          const double negative_class, 
                          const ksi::roc_threshold threshold_type);
 
-      
+       /** constructor
+       * @param partitioner a partitioner for clustering of the input domain
+       * @param number_of_tuning_iterations number of tuning iterations
+       * @param learning_coefficient learning coefficient for gradient method
+       * @param normalisation normalisation of data 
+       * @param imp fuzzy implication
+       * @param factory prototype factory
+       * @param positive_class label of the positive class
+       * @param negative_class label of the negative class
+       * @param threshold_type type of the threshold in classification 
+       * @date 2023-07-26
+       */
+      annbfis_prototype (const ksi::partitioner & partitioner,
+                         const int number_of_tuning_iterations,
+                         const double learning_coefficient,
+                         const bool normalisation,
+                         const implication & imp,
+                         const ksi::fac_prototype & factory,
+                         const double positive_class,
+                         const double negative_class,
+                         const ksi::roc_threshold threshold_type);
+                             
+       /** constructor
+       * @param partitioner a partitioner for clustering of the input domain
+       * @param number_of_tuning_iterations number of tuning iterations
+       * @param learning_coefficient learning coefficient for gradient method
+       * @param normalisation normalisation of data 
+       * @param imp fuzzy implication
+       * @param factory prototype factory
+       * @date 2023-07-27
+       */
+      annbfis_prototype (const ksi::partitioner & partitioner,
+                         const int number_of_tuning_iterations,
+                         const double learning_coefficient,
+                         const bool normalisation,
+                         const implication & imp,
+                         const ksi::fac_prototype & factory);
                      
-      virtual void createFuzzyRulebase(int nClusteringIterations, int nTuningIterations, double dbLearningCoefficient, const ksi::dataset & train) override;
+      virtual void createFuzzyRulebase(int nClusteringIterations, int nTuningIterations, double dbLearningCoefficient, const ksi::dataset & train, const ksi::dataset & validation) override;
       
     public:
       ksi::neuro_fuzzy_system * clone() const override;
       
-      // jakies metody, żeby interfejs był zaimplementowany -- zasmiecanie interfejsu  
+      // jakies metody, żeby interfejs był zaimplementowany -- zasmiecanie interfejsami  
       ksi::discriminative_model * clone_discriminant() const override;
       ksi::generative_model * clone_generator() const override;
       
       virtual std::string get_nfs_name() const override;
       virtual std::string get_nfs_description() const override;
       
-      
+      virtual std::string extra_report () const override;  
    };
 }
 

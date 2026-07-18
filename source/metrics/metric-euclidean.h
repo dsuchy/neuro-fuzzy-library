@@ -12,7 +12,7 @@
 
 namespace ksi
 {
-   /** Class for calculating a distance between data.
+   /** Class implementing the Euclidean metric.
     * @date 2018-01-04
     * 
      */
@@ -31,7 +31,7 @@ namespace ksi
       
       /** @return abbreviation of the metric 
        @date 2021-02-01 */
-      virtual std::string getAbbreviation() const;
+      virtual std::string getAbbreviation() const override;
    };
 }
 

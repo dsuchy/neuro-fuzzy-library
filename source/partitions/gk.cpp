@@ -5,7 +5,12 @@
 #include "../metrics/metric_mahalanobis.h"
 #include "../partitions/gk.h"
 #include "../auxiliary/matrix.h"
+#include "../auxiliary/vector-operators.h"
 
+std::string ksi::gk::getAbbreviation () const
+{
+    return std::string ("Gustafson-Kessel");
+}
 
 ksi::gk::gk () : fcm()
 {
@@ -67,8 +72,6 @@ double ksi::gk::calculateDistance(const std::vector<double>& x, const std::vecto
    return metrics_for_clusters[cluster].calculateDistance(x, y);
 }
  
-
- 
 std::vector<std::vector<double>> ksi::gk::modifyPartitionMatrix(const std::vector<std::vector<double>>& mV, const std::vector<std::vector<double>>& mX)
 {
    try
@@ -102,16 +105,6 @@ std::vector<std::vector<double>> ksi::gk::modifyPartitionMatrix(const std::vecto
             }
          }
 
-//          for (std::size_t c = 0; c < nClusters; c++)
-//          {
-//             for (std::size_t x = 0; x < nX; x++)
-//             {
-//                if (Dm[c][x] == 0)
-//                   Dmzeros[x]++;
-//                Dmsums[x] += Dm[c][x];
-//             }
-//          }
-         
          for (std::size_t c = 0; c < nClusters; c++)
          {
             for (std::size_t x = 0; x < nX; x++)
@@ -164,11 +157,17 @@ ksi::partition ksi::gk::doPartition(const ksi::dataset& ds)
          for (int iter = 0; iter < _nIterations; iter++)
          {
             mV = calculateClusterCentres(mU, mX);
+            
             std::vector<Matrix<double>> covariance_matrices = calculateCovarianceMatrices(mX, mU, mV);
-            updateMetrics(covariance_matrices, nAttr);
+            if (ksi::is_valid(covariance_matrices))          
+               updateMetrics(covariance_matrices, nAttr);
           
-            mU = modifyPartitionMatrix (mV, mX);
-            normaliseByColumns(mU);
+            auto mU_new = modifyPartitionMatrix (mV, mX);
+            if (ksi::is_valid(mU_new))
+            {
+               mU = mU_new;
+               normaliseByColumns(mU);
+            }
          }
       }
       else if (_epsilon > 0)
@@ -178,12 +177,17 @@ ksi::partition ksi::gk::doPartition(const ksi::dataset& ds)
          {
             mV = calculateClusterCentres(mU, mX);
             std::vector<Matrix<double>> covariance_matrices = calculateCovarianceMatrices(mX, mU, mV);
-            updateMetrics(covariance_matrices, nAttr);
+            if (ksi::is_valid(covariance_matrices))          
+               updateMetrics(covariance_matrices, nAttr);
             
-            auto mUnew = modifyPartitionMatrix (mV, mX);
-            normaliseByColumns(mUnew);
-            frob = Frobenius_norm_of_difference (mU, mUnew);
-            mU = mUnew;
+            auto mU_new = modifyPartitionMatrix (mV, mX);
+            if (ksi::is_valid(mU_new))
+            {
+               mU = mU_new;
+               normaliseByColumns(mU_new);
+            }
+            frob = Frobenius_norm_of_difference (mU, mU_new);
+            mU = mU_new;
          } while (frob > _epsilon);
       }
             
@@ -212,7 +216,6 @@ std::vector<ksi::Matrix<double>> ksi::gk::get_A_matrices_from_metrics(const std:
    return A_matrices;
 }
 
-
 void ksi::gk::updateMetrics(const std::vector<Matrix<double>>& covariance_matrices, const int nAttr)
 {
    metrics_for_clusters.clear();
@@ -231,7 +234,12 @@ ksi::Matrix<double> ksi::gk::getAMatrixForMetric(const Matrix<double> & covarian
       auto C_inv = covariance_matrix.invert(status);
       if (status != 0)
       {
-         throw std::string ("Inversion of matrix impossible!");
+         std::stringstream s;
+         s << "Inversion of matrix impossible!" << std::endl;
+         s << "matrix: " << std::endl;
+         s << covariance_matrix << std::endl;
+         throw s.str();
+         // throw std::string ("Inversion of matrix impossible!");
       }
       auto determinant = covariance_matrix.determinant(status);
       if (status != 0)
@@ -250,6 +258,11 @@ ksi::gk::gk(const double volume_rho) : _volume_rho(volume_rho)
 {
 }
 
+ksi::gk::gk(const int number_of_clusters, const int number_of_iterations) 
+{
+   this->_nClusters = number_of_clusters;
+   this->_nIterations = number_of_iterations;
+}
 
 std::vector<ksi::Matrix<double>> ksi::gk::calculateCovarianceMatrices(const std::vector<std::vector<double>>& mX, const std::vector<std::vector<double>>& mU, const std::vector<std::vector<double>>& mV)
 {

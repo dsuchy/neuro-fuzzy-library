@@ -8,6 +8,7 @@
 
 #include "rulebase.h"
 #include "rule.h"
+#include "../common/DatasetStatistics.h"
 #include "../service/debug.h"
 
 bool ksi::rulebase::validate() const
@@ -237,7 +238,7 @@ std::size_t ksi::rulebase::getNumberOfRules() const
    return rules.size();
 }
 
-void ksi::rulebase::print(std::ostream & ss)
+void ksi::rulebase::print(std::ostream & ss) const
 {
    std::size_t size = getNumberOfRules();
    for (std::size_t i = 0; i < size; i++)
@@ -246,6 +247,18 @@ void ksi::rulebase::print(std::ostream & ss)
       rules[i]->Print(ss);
       ss << std::endl;
    }
+}
+
+
+void ksi::rulebase::printLinguisticDescription(std::ostream& ss, const DatasetStatistics& datasetStat) const
+{
+    std::size_t size = getNumberOfRules();
+    for (std::size_t i = 0; i < size; i++)
+    {
+        ss << "RULE " << (i + 1) << std::endl << std::endl;
+        rules[i]->printLinguisticDescription(ss, datasetStat);
+        ss << std::endl;
+    }
 }
 
 const std::size_t ksi::rulebase::size() const
@@ -317,4 +330,11 @@ ksi::set_of_granules * ksi::rulebase::clone_set_of_granules() const
     return new ksi::rulebase(*this);
 }
 
-
+namespace ksi
+{
+    std::ostream &operator<<(std::ostream &ss, const ksi::rulebase &rb)
+    {
+        rb.print(ss);
+        return ss;
+    }
+}

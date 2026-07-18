@@ -1,4 +1,6 @@
 
+#include <memory> 
+
 #include "../neuro-fuzzy/fac_prototype.h"
 #include "../neuro-fuzzy/fac_prototype_minkowski_regression.h"
 
@@ -7,6 +9,8 @@
 #include "../neuro-fuzzy/prototype_minkowski_regression.h"
 
 #include "../metrics/metric-minkowski.h"
+
+#include "../partitions/cluster.h"
 
 ksi::fac_prototype_minkowski_regression::fac_prototype_minkowski_regression (const double m) : ksi::fac_prototype_minkowski (m)
 {
@@ -64,6 +68,13 @@ std::shared_ptr<ksi::prototype> ksi::fac_prototype_minkowski_regression::get_pro
 {
     return std::shared_ptr<ksi::prototype> (new ksi::prototype_minkowski_regression (_m));
 }
+
+std::shared_ptr<ksi::prototype> ksi::fac_prototype_minkowski_regression::get_prototype_for_cluster(const ksi::cluster & cl) 
+{
+    return std::shared_ptr<ksi::prototype> (new ksi::prototype_minkowski_regression (cl, _m));
+}
+
+
 
 std::shared_ptr<ksi::fac_prototype> ksi::fac_prototype_minkowski_regression::clone() const
 {

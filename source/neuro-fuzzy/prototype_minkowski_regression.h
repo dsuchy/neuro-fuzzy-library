@@ -3,10 +3,12 @@
 #define PROTOTYPE_MINKOWSKI_REGRESSION_H
 
 #include <vector>
+#include <iostream>
 
 #include "../neuro-fuzzy/prototype_minkowski.h"
 #include "../neuro-fuzzy/premise.h"
 #include "../auxiliary/matrix.h"
+#include "../partitions/cluster.h"
 
 namespace ksi
 {
@@ -14,10 +16,9 @@ namespace ksi
     @date 2021-01-27 */ 
    class prototype_minkowski_regression : public prototype_minkowski
    {
- 
-       
     public:
       prototype_minkowski_regression (const double m);
+      prototype_minkowski_regression (const cluster & cl, const double m);
       prototype_minkowski_regression (const prototype_minkowski_regression & wzor) = default;
       prototype_minkowski_regression (prototype_minkowski_regression && wzor) = default;
       prototype_minkowski_regression & operator= (const prototype_minkowski_regression & wzor) = default;
@@ -25,14 +26,12 @@ namespace ksi
       virtual ~prototype_minkowski_regression ();
       
       ksi::premise * clone() const override;
-      
- 
      
      /** The method prints an object into output stream.
       * @param ss an output stream to print to
       * @return the stream (ss -- parameter) the methods has printed into
       */
-     virtual std::ostream & Print (std::ostream & ss) const override;
+     virtual std::ostream & print (std::ostream & ss) const override;
      
      /** The method actualises values of parameters of the fuzzy premise
        * @param eta learning coefficient
@@ -42,7 +41,9 @@ namespace ksi
      virtual std::string get_name() const override;
      virtual std::string get_description() const override;
      
-    
+     /** @return The method returns the value of the criterion function for the principle of justified granularity. */
+     virtual double criterion_function(const std::vector<std::vector<double>>& X, const std::vector<double> & Y) const override;
+
    protected:
        /** The method elaborates differentials for the justified granularity principle.
       @date 2021-04-18

@@ -10,10 +10,17 @@
 #include "../auxiliary/vector-operators.h"
 #include "../auxiliary/matrix.h"
 #include "../metrics/metric-minkowski-weighted.h"
+#include "../partitions/cluster.h"
+
 
 ksi::prototype_minkowski_classification::prototype_minkowski_classification (const double m, const double positive_class_label, const double negative_class_label) : ksi::prototype_minkowski(m), _positive_class_label (positive_class_label), _negative_class_label(negative_class_label)
 {
 }
+
+ksi::prototype_minkowski_classification::prototype_minkowski_classification (const cluster & cl, const double m, const double positive_class_label, const double negative_class_label) : ksi::prototype_minkowski(cl, m), _positive_class_label (positive_class_label), _negative_class_label(negative_class_label)
+{
+}
+
 
 ksi::prototype_minkowski_classification::~prototype_minkowski_classification ()
 {
@@ -25,7 +32,7 @@ ksi::premise * ksi::prototype_minkowski_classification::clone() const
     return new ksi::prototype_minkowski_classification(*this);
 }
 
-std::ostream & ksi::prototype_minkowski_classification::Print(std::ostream& ss) const
+std::ostream & ksi::prototype_minkowski_classification::print(std::ostream& ss) const
 {
     ss << "prototype for classification with Minkowski metric" << std::endl;
     ss << "exponent: m = " << _m << std::endl;
@@ -48,8 +55,8 @@ std::string ksi::prototype_minkowski_classification::get_description() const
 std::pair<std::vector<double>, std::vector<double>> ksi::prototype_minkowski_classification::cardinality_differentials(
     const ksi::Matrix<double>& dsim_da, 
     const ksi::Matrix<double>& dsim_dz,
-    const std::size_t nKrotka                                                                                                                      )
-{
+    const std::size_t nKrotka)
+    {
     auto nAtrybut = _centre.size();  // liczba atrybutow
     
     auto dodawacz = [] (const double a, const double b) {return a + b;};
@@ -109,8 +116,10 @@ std::pair<std::vector<double>, std::vector<double> > ksi::prototype_minkowski_cl
 }
 
 
-double ksi::prototype_minkowski_classification::debug_criterion_function(const std::vector<std::vector<double> >& X, const std::vector<double>& Y) const
+double ksi::prototype_minkowski_classification::criterion_function(const std::vector<std::vector<double> >& X, const std::vector<double>& Y) const
 {
+    try
+    {
     // trzeba wyznaczyc kardynalnosc:
     
      auto [cardinality, 
@@ -123,13 +132,12 @@ double ksi::prototype_minkowski_classification::debug_criterion_function(const s
 //      debug(cardinality);
 //      debug(specificity);
      return cardinality * specificity;
-    
+    } CATCH;
 }
 
  
 std::pair<std::vector<double>, std::vector<double> > ksi::prototype_minkowski_classification::differentials_justified_granularity_principle(const std::vector<std::vector<double>>& X, const std::vector<double> & Y)
 {
-    ///@todo zaimplementować tę metodę
     try 
     {    
         
@@ -243,13 +251,6 @@ std::pair<std::vector<double>, std::vector<double> > ksi::prototype_minkowski_cl
           
      return { dG_da, dG_dz };
 }
-
-double ksi::prototype_minkowski_classification::Gini_values(const double probability_positive, const double probability_negative) const 
-{
-    return 1 - probability_positive * probability_positive - probability_negative * probability_negative;
-}
-
- 
 
 
 std::tuple<double, double, double, std::vector<double>> ksi::prototype_minkowski_classification::cardinality_class_probabilities_similarities

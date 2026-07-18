@@ -63,6 +63,42 @@ namespace ksi
                      const ksi::fac_prototype & prot);
 
       /** constructor
+       * @param partitioner a partitioner for clustering of the input domain
+       * @param number_of_tuning_iterations number of tuning iterations
+       * @param learning_coefficient learning coefficient for gradient method
+       * @param normalisation normalisation of data 
+       * @param prot prototype factory
+       * @param positive_class label of the positive class
+       * @param negative_class label of the negative class
+       * @param threshold_type type of the threshold in classification 
+       * @date 2023-07-12
+       */
+      tsk_prototype (const ksi::partitioner &partitioner,
+                                  const int number_of_tuning_iterations,
+                                  const double learning_coefficient,
+                                  const bool normalisation,
+                                  const ksi::fac_prototype &prot,
+                                  const double positive_class,
+                                  const double negative_class,
+                                  const ksi::roc_threshold threshold_type);
+
+      /** constructor
+       * @param partitioner a partitioner for clustering of the input domain
+       * @param number_of_tuning_iterations number of tuning iterations
+       * @param learning_coefficient learning coefficient for gradient method
+       * @param normalisation normalisation of data
+       * @param prot prototype factory
+       * @date 2023-07-26
+       */
+      tsk_prototype (const ksi::partitioner &partitioner,
+                                  const int number_of_tuning_iterations,
+                                  const double learning_coefficient,
+                                  const bool normalisation,
+                                  const ksi::fac_prototype &prot
+                         );
+
+
+      /** constructor
        * @param number_of_rules number of rules
        * @param number_of_clustering_iterations number of clustering iterations
        * @param number_of_tuning_iterations number of tuning iterations
@@ -85,7 +121,7 @@ namespace ksi
                      const ksi::roc_threshold threshold_type);
       
       
-      virtual void createFuzzyRulebase(int nClusteringIterations, int nTuningIterations, double dbLearningCoefficient, const ksi::dataset & train) override;
+      virtual void createFuzzyRulebase(int nClusteringIterations, int nTuningIterations, double dbLearningCoefficient, const ksi::dataset & train, const dataset & validation) override;
       
     public:
       ksi::neuro_fuzzy_system * clone() const override;

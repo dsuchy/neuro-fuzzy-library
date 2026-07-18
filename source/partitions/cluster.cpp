@@ -99,7 +99,7 @@ ksi::descriptor* ksi::cluster::getDescriptor(int attribute)
    CATCH;
 }
 
-const ksi::descriptor* ksi::cluster::getAddressOfDescriptor(int attribute)
+const ksi::descriptor* ksi::cluster::getAddressOfDescriptor(int attribute) const 
 {
    if (descriptors.empty())
       return nullptr;
@@ -128,7 +128,7 @@ namespace ksi
       for (auto & d : cl.descriptors)
       {
          ss << "descriptor " << attr++ << ": " << std::endl;
-         ss << d->toString() << std::endl;
+         ss << d->to_string() << std::endl;
       }
       
       if (not cl._A.empty())

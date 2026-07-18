@@ -4,6 +4,7 @@
 #define ANNBFIS_H
 
 
+#include <limits>
 #include <vector>
 #include <iostream>
 
@@ -25,12 +26,7 @@ namespace ksi
     */
    class annbfis : virtual public abstract_annbfis
    {
-   protected: 
-      
- 
-      
    public:
-      
       annbfis();   
       
       /** constructor
@@ -42,8 +38,7 @@ namespace ksi
        * @param imp implication
        * @date  2019-07-16
        */
-      annbfis (int nRules, int nClusteringIterations, int nTuningIterations,
-         double dbLearningCoefficient, bool bNormalisation, const t_norm & tnorm, const implication & imp);
+      annbfis (int nRules, int nClusteringIterations, int nTuningIterations, double dbLearningCoefficient, bool bNormalisation, const t_norm & tnorm, const implication & imp);
       
       
       /** constructor
@@ -56,8 +51,7 @@ namespace ksi
        * @param modifier data modifier one or a chain of modifiers
        * @date  2021-01-08
        */
-      annbfis (int nRules, int nClusteringIterations, int nTuningIterations,
-         double dbLearningCoefficient, bool bNormalisation, const t_norm & tnorm, const implication & imp, const ksi::data_modifier & modifier);
+      annbfis (int nRules, int nClusteringIterations, int nTuningIterations, double dbLearningCoefficient, bool bNormalisation, const t_norm & tnorm, const implication & imp, const ksi::data_modifier & modifier);
 
    protected:     
       /** constructor
@@ -69,8 +63,7 @@ namespace ksi
        * @param imp implication
        * @date  2019-07-16
        */
-      annbfis (int nRules, int nClusteringIterations, int nTuningIterations,
-         double dbLearningCoefficient, bool bNormalisation, const t_norm & tnorm, const implication & imp, const partitioner & par);
+      annbfis (int nRules, int nClusteringIterations, int nTuningIterations, double dbLearningCoefficient, bool bNormalisation, const t_norm & tnorm, const implication & imp, const partitioner & par);
       
    public:   
       /** constructor
@@ -85,9 +78,24 @@ namespace ksi
        * @param threshold_type classification threshold type 
        * @date  2019-12-22
        */
-      annbfis (int nRules, int nClusteringIterations, int nTuningIterations,
-         double dbLearningCoefficient, bool bNormalisation, const t_norm & tnorm, const implication & imp, double positive_class, double negative_class, const ksi::roc_threshold threshold_type);
+      annbfis (int nRules, int nClusteringIterations, int nTuningIterations, double dbLearningCoefficient, bool bNormalisation, const t_norm & tnorm, const implication & imp, double positive_class, double negative_class, const ksi::roc_threshold threshold_type);
 
+   public:   
+      /** constructor
+       * @param nRules number of rules
+       * @param nClusteringIterations number of clustering iterations
+       * @param nTuningIterations number of tuning iterations
+       * @param dbLearningCoefficient learning coefficient for gradient method
+       * @param tnorm a t-norm
+       * @param imp implication
+       * @param dbPositiveClass label of a positive class
+       * @param dbNegativeClass label of a negative class
+       * @param threshold_value classification threshold value 
+       * @date  2024-05-09
+       */
+      annbfis (int nRules, int nClusteringIterations, int nTuningIterations, double dbLearningCoefficient, bool bNormalisation, const t_norm & tnorm, const implication & imp, double positive_class, double negative_class, const double threshold_value = 0.5);
+      
+      
       /** constructor
        * @param nRules number of rules
        * @param nClusteringIterations number of clustering iterations
@@ -101,8 +109,23 @@ namespace ksi
        * @param modifier data modifier one or a chain of modifiers
        * @date  2021-01-09
        */
-      annbfis (int nRules, int nClusteringIterations, int nTuningIterations,
-         double dbLearningCoefficient, bool bNormalisation, const t_norm & tnorm, const implication & imp, double positive_class, double negative_class, const ksi::roc_threshold threshold_type, const ksi::data_modifier & modifier); 
+      annbfis (int nRules, int nClusteringIterations, int nTuningIterations, double dbLearningCoefficient, bool bNormalisation, const t_norm & tnorm, const implication & imp, double positive_class, double negative_class, const ksi::roc_threshold threshold_type, const ksi::data_modifier & modifier); 
+
+      /** constructor
+       * @param nRules number of rules
+       * @param nClusteringIterations number of clustering iterations
+       * @param nTuningIterations number of tuning iterations
+       * @param dbLearningCoefficient learning coefficient for gradient method
+       * @param tnorm a t-norm
+       * @param imp implication
+       * @param dbPositiveClass label of a positive class
+       * @param dbNegativeClass label of a negative class
+       * @param threshold_value classification threshold value 
+       * @param modifier data modifier one or a chain of modifiers
+       * @date  2024-05-09
+       */
+      annbfis (int nRules, int nClusteringIterations, int nTuningIterations, double dbLearningCoefficient, bool bNormalisation, const t_norm & tnorm, const implication & imp, double positive_class, double negative_class, const ksi::data_modifier & modifier, const double threshold_value = 0.5); 
+      
       
       annbfis(const annbfis & a);
       annbfis(annbfis && a);
@@ -117,27 +140,16 @@ namespace ksi
       annbfis & operator = (annbfis && a);
       ~annbfis();
       
-      
-      
       /** @return a pointer to a copy of the NFS */
       virtual neuro_fuzzy_system * clone () const ;
       
    protected:     
-  
-      
-      
       virtual discriminative_model * clone_discriminant () const;
       virtual generative_model * clone_generator () const;
       
       void set_name ();
       //virtual partition doPartition (const dataset & X) ;
       
-    
-      
    };
 }
-
-
-
-
 #endif 
