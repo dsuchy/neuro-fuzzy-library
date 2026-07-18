@@ -63,7 +63,7 @@ namespace ksi
         /** @return The method clones the object and returns the address of the copy. */
         virtual partitioner *clone() const override;
 
-        virtual ~granular_dbscan();
+        virtual ~granular_dbscan() override;
 
         /** @return an abbreviation of a method */
         virtual std::string getAbbreviation() const override;
@@ -74,7 +74,7 @@ namespace ksi
          *  @param pAlgorithm fuzzy clustering algorithm
          *  @author Dawid Suchy
          */
-        std::vector<std::vector<std::shared_ptr<descriptor>>> prepareGranularData(const dataset &ds, std::shared_ptr<partitioner> pAlgorithm);
+        std::vector<std::vector<std::shared_ptr<descriptor>>> prepareGranularData(const dataset &ds, const std::shared_ptr<partitioner> &pAlgorithm);
 
         /** @return The method finds the index of the best (maximum membership) neighbour within passed memberships vector.
          *  @param datasetSize number of granules
@@ -98,7 +98,7 @@ namespace ksi
          *  @param secondDescriptor second descriptor
          *  @author Dawid Suchy
          */
-        const descriptor_triangular calculateDistance(
+        descriptor_triangular calculateDistance(
             const std::shared_ptr<descriptor> &firstDescriptor,
             const std::shared_ptr<descriptor> &secondDescriptor);
 
@@ -107,7 +107,7 @@ namespace ksi
          *  @param triangle triangular descriptor describing one-dimensional fuzzy distance between granules
          *  @author Dawid Suchy
          */
-        const double calculateAreaPercentageInSpace(const double epsilon, const descriptor_triangular &triangle);
+        double calculateAreaPercentageInSpace(const double epsilon, const descriptor_triangular &triangle);
 
         /** @return The method returns the membership of data item d to granule granule.
          *  @param d data item
@@ -116,7 +116,7 @@ namespace ksi
          *  @date   2022-09-23
          *  @author Krzysztof Siminski
          */
-        double getMembershipToGranule(const datum &d, const std::vector<std::shared_ptr<descriptor>> &granule, const std::shared_ptr<t_norm> pTnorm);
+        double getMembershipToGranule(const datum &d, const std::vector<std::shared_ptr<descriptor>> &granule, const std::shared_ptr<t_norm> &pTnorm);
 
         /** @return The method returns the membership matrix. Each row represents a cluster. Each column represents input data item. The i-th cell in the j-th column in the matrix holds membership value of the j-th input data item to the i-th cluster.
          *  @param ds dataset: a set of input data items
