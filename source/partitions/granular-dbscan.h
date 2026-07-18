@@ -15,9 +15,42 @@
 namespace ksi
 {
 
-    /** The class implements GrDBSCAN clustering algorithm.
-        @author Dawid Suchy
-        @date 2022-03-11*/
+    /**
+    * Partitioner implementing the GrDBSCAN clustering algorithm.
+    *
+    * GrDBSCAN is a density-based clustering algorithm with linear complexity
+    * under a granular formulation, supporting hyperellipsoidal neighbourhoods
+    * and remaining efficient in higher-dimensional spaces. The algorithm is
+    * proposed as an alternative to the classic quadratic-time DBSCAN approach.
+    *
+    * This implementation accompanies the algorithm published in:
+    *
+    * D. Suchy, K. Simiński,
+    * "GrDBSCAN: A Granular Density–Based Clustering Algorithm",
+    * International Journal of Applied Mathematics and Computer Science,
+    * 2023.
+    *
+    * CITATION REQUEST
+    * If you use this algorithm, please cite the paper:
+    *
+    * <pre>
+    * @ARTICLE{Suchy2023GrDBSCAN,
+    *   title   = {GrDBSCAN: A Granular Density–Based Clustering Algorithm},
+    *   author  = {Suchy, Dawid and Siminski, Krzysztof},
+    *   journal = {International Journal of Applied Mathematics and Computer Science},
+    *   volume  = {33},
+    *   number  = {2},
+    *   pages   = {297--312},
+    *   year    = {2023},
+    *   doi     = {10.34768/amcs-2023-0022}
+    * }   
+    * </pre>
+    *
+    * DOI: https://doi.org/10.34768/amcs-2023-0022
+    *
+    * @author Dawid Suchy
+    * @date 2022-03-11
+    */
     class granular_dbscan : virtual public partitioner
     {
     protected:
