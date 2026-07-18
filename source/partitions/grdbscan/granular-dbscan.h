@@ -6,11 +6,11 @@
 #include <memory>
 #include <vector>
 
-#include "../partitions/partitioner.h"
-#include "../tnorms/t-norm.h"
-#include "../snorms/s-norm.h"
-#include "../descriptors/descriptor.h"
-#include "../descriptors/descriptor-triangular.h"
+#include "../../partitions/partitioner.h"
+#include "../../tnorms/t-norm.h"
+#include "../../snorms/s-norm.h"
+#include "../../descriptors/descriptor.h"
+#include "../../descriptors/descriptor-triangular.h"
 
 namespace ksi
 {

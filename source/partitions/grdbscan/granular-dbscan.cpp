@@ -13,15 +13,15 @@
 #include <memory>
 #include <vector>
 
-#include "../partitions/granular-dbscan.h"
-#include "../partitions/partitioner.h"
-#include "../partitions/fcm.h"
-#include "../descriptors/descriptor.h"
-#include "../descriptors/descriptor-triangular.h"
-#include "../tnorms/t-norm.h"
-#include "../snorms/s-norm.h"
-#include "../tnorms/t-norm-lukasiewicz.h"
-#include "../snorms/s-norm-lukasiewicz.h"
+#include "../../partitions/grdbscan/granular-dbscan.h"
+#include "../../partitions/partitioner.h"
+#include "../../partitions/fcm.h"
+#include "../../descriptors/descriptor.h"
+#include "../../descriptors/descriptor-triangular.h"
+#include "../../tnorms/t-norm.h"
+#include "../../snorms/s-norm.h"
+#include "../../tnorms/t-norm-lukasiewicz.h"
+#include "../../snorms/s-norm-lukasiewicz.h"
 
 ksi::granular_dbscan::granular_dbscan(
     const double epsilon,
